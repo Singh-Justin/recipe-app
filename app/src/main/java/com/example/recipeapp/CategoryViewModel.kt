@@ -14,16 +14,14 @@ data class CategoryState(
 
 
 class CategoryViewModel: ViewModel() {
-    private val _state = mutableStateOf(CategoryState())
-
-    fun getState() = _state
+    val state = mutableStateOf(CategoryState())
 
     private fun fetchCategories(){
         viewModelScope.launch {
             try{
                 val response = apiService.getCategories()
 
-                _state.value = _state.value.copy(
+                state.value = state.value.copy(
                     data = response.categories,
                     isLoading = false,
                     error = null,
@@ -31,7 +29,7 @@ class CategoryViewModel: ViewModel() {
                 )
             }
             catch (e: Exception) {
-                _state.value = _state.value.copy(
+                state.value = state.value.copy(
                     data = emptyList(),
                     isLoading = false,
                     error = e,

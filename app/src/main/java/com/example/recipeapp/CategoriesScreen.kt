@@ -12,21 +12,15 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
-fun CategoriesScreen(modifier: Modifier = Modifier){
+fun CategoriesScreen(modifier: Modifier = Modifier) {
     val categoryViewModel: CategoryViewModel = viewModel()
-    val categoryState by categoryViewModel.getState()
+    val categoryState by categoryViewModel.state
 
-    Box(modifier = modifier.fillMaxSize()){
+    Box(modifier = modifier.fillMaxSize()) {
 
-        if(categoryState.isLoading){
-            return CircularProgressIndicator(modifier.align(Alignment.Center))
-        }
+        if (categoryState.isLoading) return CircularProgressIndicator(modifier.align(Alignment.Center))
+        if (categoryState.isError) return Text("ERROR OCCURRED ${categoryState.error?.message}")
 
-        if(categoryState.isError){
-            return Text("ERROR OCCURRED ${categoryState.error?.message}")
-        }
-
-
-        Text("Data retrieved")
+        return CategoryList(categoryState.data)
     }
 }
